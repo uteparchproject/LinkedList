@@ -1,0 +1,12 @@
+public class Node {
+	
+	String element;
+	Node next;
+	
+	/*---constructor method---*/
+	public Node(String a, Node b){
+		element = a;
+		next = b;
+	}
+
+}
