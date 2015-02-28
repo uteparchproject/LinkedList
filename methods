@@ -1,0 +1,175 @@
+//Author: Jade Garcia. Professor: Olac Fuentes. TA: Bhanukiran Gurijala. Class: TR 9:00-10:20
+//Date of last modification: 9/26/13
+
+public class Methods {
+	public static void main(String[] args){
+		iNode randomList = iNode.randList(5, 20);
+		print(randomList);
+		quickSort(randomList);
+		print(randomList);
+		
+	}
+	
+	public static void print(iNode x){
+		if (x!= null){
+			System.out.print(x.item+" ");
+			print(x.next);
+		}
+      else
+         System.out.println(); 
+	}
+	
+	public static void addN(iNode node, int n){ //adds n to the items in a list
+		if(node == null){
+			return;		//returns if it's an empty list
+		}
+		node.item += n; //adds n to first node before entering loop
+		
+		while(node.next != null){
+			node = node.next;		//loops through the list and adds n to all items
+			node.item += n;
+		}
+	}
+	
+	public static int elementN(iNode node, int n){ //returns the nth element in a list. -1 if out of bounds
+		if(node == null){
+			return -1;		//returns -1 if empty list
+		}
+		if(n == 1){
+			return node.item;	//special case for first node
+		}
+		for(int i = 1; i <n; i++){	//loops through list iteratively and checks if nodes are null
+			node = node.next;
+			if(node == null){
+				return -1;
+			}
+		}
+		return node.item;
+	}
+	
+	public static iNode largestElement(iNode node){ //finds largest element in list
+		if(node == null || node.next==null){			//returns head if head is null, or the only node in list
+			return node;
+		}
+		int largest = node.item;	//assigns head item as 'largest'
+		
+		while(node.next != null){	//loops through list, replacing largest
+			node = node.next;
+			if(node.item > largest){
+				largest = node.item;
+			}
+		}
+		
+		return node;
+	}
+	
+	public static iNode smallestElement(iNode node){ //finds smallest element in list
+		if(node == null || node.next==null){			//returns head if head is null, or the only node in list
+			return node;
+		}
+		int smallest = node.item;	//assigns head item as 'smallest'
+		
+		while(node.next != null){	//loops through list, replacing smallest
+			node = node.next;
+			if(node.item < smallest){
+				smallest = node.item;
+			}
+		}
+		
+		return node;
+	}
+	
+	public static void rotateList(iNode node){ //rotates list to the left
+		if(node == null || node.next == null){ //returns if list is empty or only has 1 element
+			return;
+		}
+		int temp =  node.item;	//holds item of head node
+		
+		while(node.next != null){	//loops through list, moves the items one node to the left
+			node.item = node.next.item;
+			node = node.next;
+		}
+		
+		node.item = temp;	//the item of last node is assigned the holder variable from first node
+	}
+	
+	public static iNode oddList(iNode node){
+		/*if(node == null || node.next == null){
+			return node;
+		}*/
+		iNode newNode = new iNode(node.item);
+		iNode head = newNode;
+		int i = 1;
+		while(node.next != null){
+			node = node.next;
+			i++;
+			if(i%2 == 1){
+				newNode.next = new iNode(node.item);
+				newNode = newNode.next;
+			}
+		}
+		return head;
+	}
+	
+	public static iNode evenList(iNode node){
+		if(node == null || node.next == null){
+			return node;
+		}
+		node=node.next;
+		iNode newNode = new iNode(node.item);
+		iNode head = newNode;
+		int i = 2;
+		while(node.next != null){
+			node = node.next;
+			i++;
+			if(i%2 == 0){
+				newNode.next = new iNode(node.item);
+				newNode = newNode.next;
+			}
+		}
+		return head;
+	}
+	
+	public static iNode listAppend(iNode h, iNode i){
+		iNode head = h;
+		while(h.next != null){
+			h = h.next;
+		}
+		h.next = i;
+		return head;
+	}
+	
+	public static iNode quickSort(iNode L){
+		if(L.next == null){
+			return L;
+		}
+		else{
+			iNode L1 = new iNode(L.item);
+			iNode L1starter = L1;	//saves pointer to head of L1
+			iNode L2 = new iNode(-1, null);	//starter node for L2 reference
+			iNode L2starter = L2;	//saves pointer to head of L2
+			int small = smallestElement(L).item;
+			while(L.next != null){
+				L = L.next;
+				if(L.item >= small){
+					L2.next = new iNode(L.item);
+					L2 = L2.next;
+				}
+				else{
+					L1.next = new iNode(L.item);
+					L1 = L1.next;
+				}
+			}
+			/*print(L1starter);
+			print(L2starter.next);*/
+			L1 = quickSort(L1starter);
+			L2 = quickSort(L2starter.next);
+			
+			L = listAppend(L1, L2);
+		return L;
+		}
+	}
+	
+	
+}
+
